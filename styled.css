@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.main-container {
+  height: 100vh;
+  width: 100vw;
+  background-image: url(./assetes/weatherBackground.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.todday-container {
+  height: 100vh;
+  width: 65vw;
+  border-right: 5px solid rgba(200, 200, 200, 0.3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 50px;
+}
+
+.todday-container .todday {
+  border: 5px solid rgba(200, 200, 200, 0.3);
+  color: white;
+  font-size: 24px;
+  height: 200px;
+  width: 300px;
+}
+.todday p {
+  margin: 5px;
+}
+
+.today-temperature {
+  font-size: 36px;
+  font-weight: bold;
+  color: rgba(139, 202, 204, 0.3);
+}
+
+.week-container {
+}
