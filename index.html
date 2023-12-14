@@ -8,21 +8,26 @@
   </head>
   <body>
     <div class="main-container">
+      <header>
+        <input type="text" placeholder="Cracow" />
+        <button>search</button>
+      </header>
       <div class="todday-container">
-        <div class="todday">
-          <p class="todday-day"></p>
-          <p class="todday-time"></p>
-          <p class="today-temperature"></p>
+        <div class="todday-element">
+          <img src="assetes/svgFile/cloudSvg.svg" />
+          <div class="today-text-wrapper">
+            <p class="todday-day"></p>
+            <p class="today-temperature"></p>
+          </div>
         </div>
-        <input />
       </div>
       <div class="week-container">
-        <div class="tomorrow"></div>
-        <div class="day-after-tomorrow"></div>
-        <div class="in-three-days"></div>
-        <div class="in-four-days"></div>
-        <div class="in-five-days"></div>
-        <div class="in-six-days"></div>
+        <div class="tomorrow">
+          <img class="tomorow-svg" src="assetes/svgFile/snowSvg.svg" />
+          <p class="tomorow-text-day"></p>
+          <p class="tomorow-text-date"></p>
+          <p class="tomorow-text-temperature"></p>
+        </div>
       </div>
       <script src="main.js"></script>
     </div>
