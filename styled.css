@@ -71,6 +71,7 @@ header button {
   background-color: rgba(100, 100, 100, 0.6);
   padding: 16px;
   border-radius: 10px;
+  margin-right: 16px;
 }
 
 .tomorrow img {
