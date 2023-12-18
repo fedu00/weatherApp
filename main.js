@@ -1,6 +1,4 @@
 const API_KEY = "80544cd629934b5f910221101231212";
-const town = "Cracow";
-const URL = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${town}&days=7&aqi=no&alerts=no`;
 
 const WEEK = [
   "Sunday",
@@ -12,11 +10,13 @@ const WEEK = [
   "Saturday",
 ];
 
+const elementWeekContainer = document.querySelector(".week-container");
+
 const today = new Date();
 const day = today.getDate();
 const month = today.getMonth();
 const year = today.getUTCFullYear();
-const dayOfTheWeek = today.getDay(); //tu sa numery dni tygodnia poniedziałek
+const dayOfTheWeek = today.getDay();
 
 const createDayElement = (dayName, date, temperature) => {
   const newDayContent = document.createTextNode(dayName);
@@ -41,22 +41,23 @@ const createDayElement = (dayName, date, temperature) => {
   newDivContainer.appendChild(newParagraphDate);
   newDivContainer.appendChild(newParagraphTemp);
 
-  elementMother.appendChild(newDivContainer);
+  elementWeekContainer.appendChild(newDivContainer);
 };
 
-const getTodayAPI = async () => {
-  const response = await fetch(URL);
-  const data = await response.json();
-
-  const temperatureElement = document.querySelector(".today-temperature");
-  temperatureElement.textContent = `${data.current.temp_c}°C`;
+const getToddayInformation = ({ date, nameOfDay, avgTemp }) => {
+  const dayElementContext = document.querySelector(".todday-day");
+  const dayElementTemperature = document.querySelector(".today-temperature");
+  dayElementContext.textContent = ` ${date} ${nameOfDay}`;
+  dayElementTemperature.textContent = `${avgTemp}°C`;
 };
 
-const getWeekAPI = async () => {
+const getWeekAPI = async (town = "Cracow") => {
+  const URL = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${town}&days=7&aqi=no&alerts=no`;
   const response = await fetch(URL);
   const data = await response.json();
+  const downloadedWeekData = data.forecast.forecastday;
 
-  const weekData = data.forecast.forecastday.map((day, index) => {
+  const weekData = downloadedWeekData.map((day, index) => {
     const isEndOfWeek = dayOfTheWeek + index > 6;
     const nameOfDay = isEndOfWeek
       ? dayOfTheWeek + index - 7
@@ -68,24 +69,34 @@ const getWeekAPI = async () => {
     };
   });
 
-  weekData.forEach((day, index) => {
-    if (index > 0) {
+  const todayData = weekData.splice(0, 1);
+  getToddayInformation(todayData[0]);
+
+  const elementIsEpmty = elementWeekContainer.querySelector("div")
+    ? false
+    : true;
+
+  if (elementIsEpmty) {
+    weekData.forEach((day) => {
       createDayElement(day.nameOfDay, day.date, day.avgTemp);
-    } else {
-      return;
-    }
-  });
+    });
+  } else {
+    elementWeekContainer.innerHTML = "";
+    weekData.forEach((day) => {
+      createDayElement(day.nameOfDay, day.date, day.avgTemp);
+    });
+  }
 };
 
 getWeekAPI();
 
-getTodayAPI();
+const inputElement = document.querySelector("input");
+const buttonElement = document.querySelector("button");
+const townElement = document.querySelector(".town-container");
 
-const getToddayInformation = () => {
-  const dayElement = document.querySelector(".todday-day");
-  dayElement.textContent = ` ${day}-${month}-${year} ${WEEK[dayOfTheWeek]}`;
-};
-
-getToddayInformation();
-
-const elementMother = document.querySelector(".week-container");
+buttonElement.addEventListener("click", () => {
+  const newTown = inputElement.value;
+  townElement.innerHTML = `${newTown}`;
+  getWeekAPI(newTown);
+  inputElement.value = "";
+});
