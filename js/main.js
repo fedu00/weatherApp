@@ -1,3 +1,5 @@
+import DayWeather from "./dayWeather.js";
+
 const API_KEY = "80544cd629934b5f910221101231212";
 
 const WEEK = [
@@ -17,32 +19,6 @@ const day = today.getDate();
 const month = today.getMonth();
 const year = today.getUTCFullYear();
 const dayOfTheWeek = today.getDay();
-
-const createDayElement = (dayName, date, temperature) => {
-  const newDayContent = document.createTextNode(dayName);
-  const newParagraphDay = document.createElement("p");
-  newParagraphDay.appendChild(newDayContent);
-
-  const newDateContent = document.createTextNode(date);
-  const newParagraphDate = document.createElement("p");
-  newParagraphDate.appendChild(newDateContent);
-
-  const newTemperatureContent = document.createTextNode(`${temperature}°C`);
-  const newParagraphTemp = document.createElement("p");
-  newParagraphTemp.appendChild(newTemperatureContent);
-
-  const newImageSvg = document.createElement("img");
-  newImageSvg.setAttribute("src", "assetes/svgFile/raindSvg.svg");
-
-  const newDivContainer = document.createElement("div");
-  newDivContainer.classList.add("tomorrow");
-  newDivContainer.appendChild(newImageSvg);
-  newDivContainer.appendChild(newParagraphDay);
-  newDivContainer.appendChild(newParagraphDate);
-  newDivContainer.appendChild(newParagraphTemp);
-
-  elementWeekContainer.appendChild(newDivContainer);
-};
 
 const getToddayInformation = ({ date, nameOfDay, avgTemp }) => {
   const dayElementContext = document.querySelector(".todday-day");
@@ -76,14 +52,17 @@ const getWeekAPI = async (town = "Cracow") => {
     ? false
     : true;
 
+  console.log(elementIsEpmty);
   if (elementIsEpmty) {
     weekData.forEach((day) => {
-      createDayElement(day.nameOfDay, day.date, day.avgTemp);
+      const newDay = new DayWeather();
+      newDay.test(day);
     });
   } else {
     elementWeekContainer.innerHTML = "";
     weekData.forEach((day) => {
-      createDayElement(day.nameOfDay, day.date, day.avgTemp);
+      const newDay = new DayWeather();
+      newDay.test(day);
     });
   }
 };
