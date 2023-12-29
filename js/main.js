@@ -15,10 +15,53 @@ const WEEK = [
 const elementWeekContainer = document.querySelector(".week-container");
 
 const today = new Date();
-const day = today.getDate();
-const month = today.getMonth();
-const year = today.getUTCFullYear();
+
 const dayOfTheWeek = today.getDay();
+
+const checkTimeNumber = (timeValue, timeElement) => {
+  const corectTime = timeValue < 10 ? `0${timeValue}` : `${timeValue}`;
+  timeElement.innerHTML = corectTime;
+};
+
+const setTime = () => {
+  const hoursElement = document.querySelector(".hours");
+  const minutesElement = document.querySelector(".minutes");
+  const secondsElement = document.querySelector(".seconds");
+
+  let hours = today.getHours();
+  let minutes = today.getMinutes();
+  let seconds = today.getSeconds();
+
+  hoursElement.innerHTML = hours;
+  minutesElement.innerHTML = minutes;
+  secondsElement.innerHTML = seconds;
+
+  setInterval(() => {
+    if (seconds < 59) {
+      seconds++;
+      checkTimeNumber(seconds, secondsElement);
+    } else {
+      seconds = 0;
+      checkTimeNumber(seconds, secondsElement);
+      if (minutes < 59) {
+        minutes++;
+        checkTimeNumber(minutes, minutesElement);
+      } else {
+        minutes = 0;
+        checkTimeNumber(minutes, minutesElement);
+        if (hours > 23) {
+          hours++;
+          checkTimeNumber(hours, hoursElement);
+        } else {
+          hours = 0;
+          checkTimeNumber(hours, hoursElement);
+        }
+      }
+    }
+  }, "1000");
+};
+
+setTime();
 
 const getToddayInformation = ({ date, nameOfDay, avgTemp }) => {
   const dayElementContext = document.querySelector(".todday-day");
@@ -52,17 +95,16 @@ const getWeekAPI = async (town = "Cracow") => {
     ? false
     : true;
 
-  console.log(elementIsEpmty);
   if (elementIsEpmty) {
     weekData.forEach((day) => {
       const newDay = new DayWeather();
-      newDay.test(day);
+      newDay.createDayElement(day);
     });
   } else {
     elementWeekContainer.innerHTML = "";
     weekData.forEach((day) => {
       const newDay = new DayWeather();
-      newDay.test(day);
+      newDay.createDayElement(day);
     });
   }
 };
